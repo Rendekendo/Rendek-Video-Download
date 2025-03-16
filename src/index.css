@@ -42,4 +42,16 @@ iframe {
   padding: 20px;
   gap: 20px;
 }
-
+#videoTabs{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.videoTitles {
+  background-color: var(--background-color2);
+  border-radius: 12px;
+  font-size: 12px;
+  padding: 4px;
+  border: 0;
+  color: var(--text-color);
+}
