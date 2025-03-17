@@ -31,7 +31,7 @@ textarea{
   padding: 6px;
   font-size: 12px;
 }
-iframe {
+#player {
   width: 800px;
   height: 450px;
   border-radius: 12px;
@@ -54,4 +54,9 @@ iframe {
   padding: 4px;
   border: 0;
   color: var(--text-color);
+}
+
+#seekbar {
+  width: 100%;
+
 }
