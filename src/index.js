@@ -107,6 +107,6 @@ function onPlayerStateChange(event) {
     if (event.data == YT.PlayerState.PLAYING) {
         currentVideoDuration = event.target.getDuration();
       }
-    // setInterval(updateSeekbar, 500);
+    setInterval(updateSeekbar, 500);
 }
 
