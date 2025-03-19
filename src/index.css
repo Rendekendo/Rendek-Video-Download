@@ -57,6 +57,18 @@ textarea{
 }
 
 #seekbar {
+  -webkit-appearance: none;
+  background: transparent;
+  cursor: pointer;
   width: 100%;
-
+  background-color: var(--background-color2);
+  border-radius: 4px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; 
+  appearance: none;
+  margin-top: -12px; 
+  background-color: var(--text-color);
+  height: 2rem;
+  width: 1rem;    
 }
