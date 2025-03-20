@@ -1,7 +1,9 @@
 :root {
-  --background-color: #202020;
-  --background-color2: #404080;
-  --text-color: whitesmoke;
+  --background-color: #0F172A;
+  --background-color2: #1E293B;
+  --background-color3: #334155;
+  --accent-color: #E63946;
+  --text-color: #F8FAFC;
 }
 
 body {
@@ -46,16 +48,23 @@ textarea{
   display: flex;
   flex-direction: column;
   gap: 4px;
+  width: 300px;
 }
 .videoTitles {
   background-color: var(--background-color2);
-  border-radius: 12px;
+  border-radius: 6px;
   font-size: 12px;
-  padding: 4px;
+  padding: 4px 4px 8px 4px;
   border: 0;
   color: var(--text-color);
+  overflow: hidden;
+  height: 30px;
+  line-height: 13.2px;
+  transition: 0.5s ease;
 }
-
+.videoTitles:hover {
+  background-color: var(--background-color3);
+}
 #seekbar {
   -webkit-appearance: none;
   background: transparent;

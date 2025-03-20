@@ -1,10 +1,10 @@
-const iframeElement = document.querySelector('iframe');
+var fs = require('fs');
+const { ipcRenderer } = require('electron');
+
 const linkTextZone = document.querySelector('textarea');
-const nextButton = document.getElementById('nextButton');
-const previousButton = document.getElementById('previousButton');
 const videoTabs = document.getElementById('videoTabs');
-const videoButtons = document.getElementsByClassName('videoTitles');
 const seekbar = document.getElementById('seekbar');
+const downloadAllButton = document.getElementById('downloadAllButton');
 
 let linksArray = [];
 let currentVideoDuration = 0.0;
@@ -21,6 +21,9 @@ linkTextZone.addEventListener('input', function() {
 seekbar.addEventListener('input', function() {
     updateVideoCurrentTime();
 });
+downloadAllButton.addEventListener('click', function() {
+    donwloadVideo();
+});
 
 //FUNCTIONS ----------------------------------------------------------------------------------------------------
 async function getVideoJson(videoId){
@@ -33,31 +36,37 @@ async function getVideoJson(videoId){
 async function populateVideoTabs() {
     let textZoneContent = linkTextZone.value; 
     linksArray = textZoneContent.split(/\r?\n/).filter(Boolean);
+
+    const youtubeRegex = /(?:https?:\/\/(?:www\.)?(?:youtube\.com\/(?:[^\/]+\/.*|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11}))/;
+
+    // Loop through the links and extract the video ID
     for (let i = 0; i < linksArray.length; i++) {
-        let match = linksArray[i].match(/(?:youtube\.com\/(?:[^\/]+\/.*|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/);
+        let match = linksArray[i].match(youtubeRegex);
         if (match) {
             linksArray[i] = match[1]; 
         }
     }
-    console.log(linksArray);
 
-    videoTabs.innerHTML = '';
+    videoTabs.innerHTML = ''; 
 
     for (let i = 0; i < linksArray.length; i++) {
         const newDiv = document.createElement('button');
         newDiv.setAttribute('class', 'videoTitles');
         newDiv.setAttribute('onclick', `setCurrentIndex(${i})`);
+        newDiv.setAttribute('index', `${i}`);
         let data = await getVideoJson(linksArray[i]);
         newDiv.textContent = data.title;
         videoTabs.appendChild(newDiv);
-
-        console.log(linksArray);
     }
 }
 
 function setCurrentIndex(index){
     player.loadVideoById(linksArray[index],
         0);
+    document.querySelectorAll('.videoTitles').forEach(button => {
+        button.style.backgroundColor = ''; 
+    });
+    document.querySelector(`.videoTitles[index="${index}"]`).style.backgroundColor = 'var(--accent-color)';
 }
 function updateSeekbar(){
     currentVideoTime = player.getCurrentTime();
@@ -67,6 +76,9 @@ function updateVideoCurrentTime(){
     let seekTo = (currentVideoDuration / 100) * seekbar.value;
     console.log(seekbar.value);
     player.seekTo(seekTo, true);
+}
+function donwloadVideo(){
+    ipcRenderer.send('download-all', linksArray);
 }
 
 // YOUTUBE API --------------------------------------------------------------------------
